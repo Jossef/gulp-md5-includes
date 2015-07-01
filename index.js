@@ -1,9 +1,7 @@
 var path = require('path');
-var gutil = require('gulp-util');
 var through = require('through2');
 var crypto = require('crypto');
 var fs = require('fs');
-var glob = require('glob');
 var Path = require('path');
 
 module.exports = function (includes, name) {

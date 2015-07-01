@@ -1,57 +1,78 @@
-var path = require('path')
-, gutil = require('gulp-util')
-, through = require('through2')
-, crypto = require('crypto')
-, fs = require('fs')
-, glob = require('glob');
+var path = require('path');
+var gutil = require('gulp-util');
+var through = require('through2');
+var crypto = require('crypto');
+var fs = require('fs');
+var glob = require('glob');
+var Path = require('path');
 
-module.exports = function (size, ifile) {
-    size = size | 0;
-    return through.obj(function (file, enc, cb) {
+module.exports = function (includes, name) {
+
+    return through.obj(function (file, encoding, callback) {
+        if (file.isNull()) {
+            return callback(null, file);
+        }
+
         if (file.isStream()) {
-            this.emit('error', new gutil.PluginError('gulp-debug', 'Streaming not supported'));
-            return cb();
+            return callback(new Error('Streaming not supported'));
         }
 
-        if(!file.contents){
-            return cb();
+        if (!includes || !includes.length || !file.contents) {
+            return callback(null, file);
         }
 
-        var d = calcMd5(file, size)
-        , filename = path.basename(file.path)
-        , relativepath = path.relative(file.base ,file.path)
-        , sub_namepath = relativepath.replace(new RegExp(filename) , "").split(path.sep).join('/')
-        , dir;
+        var fileContents = file.contents.toString(encoding);
 
-        if(file.path[0] == '.'){
-            dir = path.join(file.base, file.path);
-        } else {
-            dir = file.path;
+        for (var i in includes) {
+            var item = includes[i];
+
+            var path;
+            var pattern;
+
+            if (typeof item === 'string') {
+                path = item;
+                pattern = item;
+            }
+            else if (typeof item === 'object') {
+                path = item.path;
+                pattern = item.pattern || item.path;
+            }
+            else {
+                return callback(new Error('Invalid include item. only strings or objects'));
+            }
+
+            var exists = fs.existsSync(path);
+
+            if (!exists) {
+                return callback(new Error('Could not calculate MD5 hash - file `' + path + '` does not exists. \nUse the `.path` option to hint for filesystem path. see examples @ https://github.com/Jossef/gulp-md5-includes.git\n'));
+            }
+
+            var content = fs.readFileSync(path, encoding);
+
+            var includeFileMD5Hash = calculateMD5Hash(content);
+            var newIncludeName = pattern + '?' + includeFileMD5Hash;
+            fileContents = replaceAll(fileContents, pattern, newIncludeName);
         }
-        dir = path.dirname(dir);
 
-        var md5_filename = filename + '?' + d;
-        ifile && glob(ifile,function(err, files){
-            if(err) return console.log(err);
-            files.forEach(function(ilist){
-              var result = fs.readFileSync(ilist,'utf8').replace(new RegExp(sub_namepath + filename), sub_namepath + md5_filename);
-                fs.writeFileSync(ilist, result, 'utf8');
-            })
-        })
+        file.contents = new Buffer(fileContents, encoding);
+        if (name)
+        {
+            file.path = Path.join(file.base, name);
+        }
 
-        file.path = path.join(dir, md5_filename);
+        return callback(null, file);
 
-        this.push(file);
-        cb();
-    }, function (cb) {
-        cb();
+    }, function (callback) {
+        callback();
     });
 };
 
-
-function calcMd5(file, slice){
+function calculateMD5Hash(content) {
     var md5 = crypto.createHash('md5');
-    md5.update(file.contents, 'utf8');
+    md5.update(content, 'utf8');
+    return md5.digest('hex');
+}
 
-    return slice >0 ? md5.digest('hex').slice(0, slice) : md5.digest('hex');
+function replaceAll(str, find, replace) {
+    return str.replace(new RegExp(find, 'g'), replace);
 }

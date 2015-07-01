@@ -1,30 +1,32 @@
 {
-  "name": "gulp-md5-assets",
-  "version": "0.1.9",
-  "description": "md5 the static file and change the names in the quoted html, forked from gulp-md5-plus ",
+  "name": "gulp-md5-includes",
+  "version": "0.1.0",
+  "description": "Hashing resource files like a boss",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stipsan/gulp-md5-assets.git"
+    "url": "https://github.com/Jossef/gulp-md5-includes.git"
   },
   "keywords": [
     "gulp",
     "gulp-md5",
+    "gulp-md5-includes",
     "gulpplugin"
   ],
   "dependencies": {
-    "gulp-util": "~2.2.14",
-    "through2": "^0.4.1",
-    "glob": "^4.0.6"
+    "glob": "^4.5.3",
+    "gulp-util": "^2.2.20",
+    "q": "^2.0.3",
+    "through2": "^0.4.2"
   },
-  "homepage": "https://github.com/stipsan/gulp-md5-assets.git",
-  "author": "stipsan",
-  "email": "stipsan@gmail.com",
+  "homepage": "https://github.com/Jossef/gulp-md5-includes.git",
+  "author": "jossef",
+  "email": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/stipsan/gulp-md5-assets/issues"
+    "url": "https://github.com/Jossef/gulp-md5-includes/issues"
   }
 }

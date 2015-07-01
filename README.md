@@ -85,23 +85,23 @@ gulp.task('md5-advanced', function () {
 
 ## API
 
-### `md5Includes(includes,newName)`
-
-#### includes
-Type: `Array`
-Default: null
-
-The included files you wish to hash in your `HTML` file
-can be `string` or `object`
-
-#### newName
-Type: `String`
-Default: null
-
-Optional: html new name
+> ### `md5Includes(includes,newName)`
+> 
+> #### includes
+> Type: `Array`
+> Default: null
+> 
+> The included files you wish to hash in your `HTML` file
+> can be `string` or `object`
+> 
+> #### newName
+> Type: `String`
+> Default: null
+> 
+> Optional: html new name
 
 ## License
 
-http://en.wikipedia.org/wiki/MIT_License[MIT License]
+http://en.wikipedia.org/wiki/MIT_License
 
 

@@ -1,6 +1,6 @@
 # gulp-md5-includes
 
-Adds a MD5 suffix to files which included in a main `HTML` file
+Adds **Soft MD5 suffix** to files which included in a main `HTML` file
 
 #### Why?
 this forces the browser to re-fetch new files that are already cached 

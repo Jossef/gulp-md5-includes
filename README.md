@@ -1,9 +1,13 @@
 # gulp-md5-includes
 
-Adds to files which are included in an `HTML` file a suffix to the request to ensure that **new files won't be cached!**
+Adds a MD5 suffix to files which included in a main `HTML` file
 
+#### Why?
+this forces the browser to re-fetch new files that are already cached 
 
-### Before
+## Example 
+
+#### Before
 
 ```html
 <!DOCTYPE html>
@@ -19,7 +23,7 @@ Adds to files which are included in an `HTML` file a suffix to the request to en
 </html>
 ```
 
-### After
+#### After
 
 ```html
 <!DOCTYPE html>
@@ -81,7 +85,7 @@ gulp.task('md5-advanced', function () {
 
 ## API
 
-### md5(size,file)
+### `md5Includes(includes,newName)`
 
 #### includes
 Type: `Array`
@@ -90,7 +94,7 @@ Default: null
 The included files you wish to hash in your `HTML` file
 can be `string` or `object`
 
-#### filename
+#### newName
 Type: `String`
 Default: null
 
